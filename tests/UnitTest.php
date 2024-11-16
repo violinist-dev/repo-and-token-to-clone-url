@@ -14,7 +14,7 @@ class UnitTest extends TestCase
      */
     public function testAllCasesInOne(string $repo_string, string $token_string, string $expected_clone_string) : void
     {
-        $url = ToCloneUrl::getCloneUrl($repo_string, $token_string);
+        $url = ToCloneUrl::fromRepoAndToken($repo_string, $token_string);
         self::assertEquals($expected_clone_string, $url);
     }
 
@@ -28,6 +28,16 @@ class UnitTest extends TestCase
                 'git@bitbucket.org:user/repo.git',
                 'mytoken',
                 'https://x-token-auth:mytoken@bitbucket.org/user/repo.git',
+            ],
+            [
+                'git@bitbucket.org:user/repo.git',
+                'user:mytoken',
+                'https://user:mytoken@bitbucket.org/user/repo.git',
+            ],
+            [
+                'git@github.com:user/repo.git',
+                'token123',
+                'https://x-access-token:token123@github.com/user/repo.git',
             ],
         ];
     }
