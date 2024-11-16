@@ -9,7 +9,10 @@ use function peterpostmann\uri\parse_uri;
 final class ToCloneUrl
 {
 
-    public static function getCloneUrl(string $repo, string $authToken) : string
+    /**
+     * A static helper to help you on your way.
+     */
+    public static function fromRepoAndToken(string $repo, string $authToken) : string
     {
         $repo_path = $repo;
         $repo_parsed = parse_uri($repo);
@@ -24,6 +27,14 @@ final class ToCloneUrl
                             $repo_parsed['path']
                         );
                     }
+                    break;
+
+                case 'git@github.com':
+                    $repo_path = sprintf(
+                        'https://x-access-token:%s@github.com/%s',
+                        $authToken,
+                        $repo_parsed['path']
+                    );
                     break;
             }
         }
