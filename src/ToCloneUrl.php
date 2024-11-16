@@ -44,7 +44,11 @@ final class ToCloneUrl
                 switch ($repo_parsed['host']) {
                     case 'www.github.com':
                     case 'github.com':
-                        $repo_path = sprintf('https://x-access-token:%s@github.com%s', $authToken, $repo_parsed["path"]);
+                        $repo_path = sprintf(
+                            'https://x-access-token:%s@github.com%s',
+                            $authToken,
+                            $repo_parsed["path"]
+                        );
                         break;
                 }
             }
