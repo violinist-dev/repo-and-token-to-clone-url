@@ -50,6 +50,11 @@ final class ToCloneUrl
                             $repo_parsed["path"]
                         );
                         break;
+
+                    case 'www.gitlab.com':
+                    case 'gitlab.com':
+                        $repo_path = sprintf('https://oauth2:%s@gitlab.com%s', $authToken, $repo_parsed["path"]);
+                        break;
                 }
             }
         }
