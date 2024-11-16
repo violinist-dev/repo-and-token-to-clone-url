@@ -49,6 +49,16 @@ class UnitTest extends TestCase
                 'token123',
                 'https://x-access-token:token123@github.com/user/repo.git',
             ],
+            [
+                'https://gitlab.com/user/repo.git',
+                'token123',
+                'https://oauth2:token123@gitlab.com/user/repo.git',
+            ],
+            [
+                'https://www.gitlab.com/user/repo.git',
+                'token123',
+                'https://oauth2:token123@gitlab.com/user/repo.git',
+            ],
         ];
     }
 }
