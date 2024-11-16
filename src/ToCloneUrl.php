@@ -16,6 +16,7 @@ final class ToCloneUrl
     {
         $repo_path = $repo;
         $repo_parsed = parse_uri($repo);
+        $has_replaced = false;
         if (!empty($repo_parsed)) {
             switch ($repo_parsed['_protocol']) {
                 case 'git@bitbucket.org':
@@ -27,6 +28,7 @@ final class ToCloneUrl
                             $repo_parsed['path']
                         );
                     }
+                    $has_replaced = true;
                     break;
 
                 case 'git@github.com':
@@ -35,7 +37,16 @@ final class ToCloneUrl
                         $authToken,
                         $repo_parsed['path']
                     );
+                    $has_replaced = true;
                     break;
+            }
+            if (!$has_replaced) {
+                switch ($repo_parsed['host']) {
+                    case 'www.github.com':
+                    case 'github.com':
+                        $repo_path = sprintf('https://x-access-token:%s@github.com%s', $authToken, $repo_parsed["path"]);
+                        break;
+                }
             }
         }
         return $repo_path;
