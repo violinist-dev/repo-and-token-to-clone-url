@@ -58,7 +58,11 @@ final class ToCloneUrl
 
                     case 'www.bitbucket.org':
                     case 'bitbucket.org':
-                        $repo_path = sprintf('https://x-token-auth:%s@bitbucket.org%s', $authToken, $repo_parsed["path"]);
+                        $repo_path = sprintf(
+                            'https://x-token-auth:%s@bitbucket.org%s',
+                            $authToken,
+                            $repo_parsed["path"]
+                        );
                         if (strlen($authToken) < 50 && strpos($authToken, ':') !== false) {
                             $repo_path = sprintf(
                                 'https://%s@bitbucket.org%s',
