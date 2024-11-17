@@ -71,6 +71,17 @@ final class ToCloneUrl
                             );
                         }
                         break;
+
+                    default:
+                        $port = 443;
+                        if ($repo_parsed['scheme'] === 'http') {
+                            $port = 80;
+                        }
+                        if (!empty($repo_parsed["port"])) {
+                            $port = $repo_parsed["port"];
+                        }
+                        $repo_path = sprintf('%s://oauth2:%s@%s:%d%s', $repo_parsed["scheme"], $authToken, $repo_parsed["host"], $port, $repo_parsed["path"]);
+                        break;
                 }
             }
         }
