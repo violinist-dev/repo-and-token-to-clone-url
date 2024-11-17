@@ -74,6 +74,26 @@ class UnitTest extends TestCase
                 'user:token123',
                 'https://user:token123@bitbucket.org/user/repo.git',
             ],
+            [
+                'https://gitlab.acme.com/user/repo.git',
+                'mytoken',
+                'https://oauth2:mytoken@gitlab.acme.com/user/repo.git',
+            ],
+            [
+                'http://gitlab.acme.com/user/repo.git',
+                'mytoken',
+                'http://oauth2:mytoken@gitlab.acme.com/user/repo.git',
+            ],
+            [
+                'https://gitlab.acme.com:9977/user/repo.git',
+                'mytoken',
+                'https://oauth2:mytoken@gitlab.acme.com:9977/user/repo.git',
+            ],
+            [
+                'http://gitlab.acme.com:8877/user/repo.git',
+                'mytoken',
+                'http://oauth2:mytoken@gitlab.acme.com:8877/user/repo.git',
+            ],
         ];
     }
 }

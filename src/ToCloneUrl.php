@@ -71,6 +71,44 @@ final class ToCloneUrl
                             );
                         }
                         break;
+
+                    default:
+                        $port = 443;
+                        if ($repo_parsed['scheme'] === 'http') {
+                            $port = 80;
+                        }
+                        if (!empty($repo_parsed["port"])) {
+                            $port = $repo_parsed["port"];
+                        }
+                        $repo_path = sprintf(
+                            '%s://oauth2:%s@%s:%d%s',
+                            $repo_parsed["scheme"],
+                            $authToken,
+                            $repo_parsed["host"],
+                            $port,
+                            $repo_parsed["path"]
+                        );
+                        // If using a more standard way, meaning the scheme
+                        // matches its default port so to speak, we can just
+                        // use the host and path.
+                        if ($port === 443 && $repo_parsed['scheme'] === 'https') {
+                            $repo_path = sprintf(
+                                'https://oauth2:%s@%s%s',
+                                $authToken,
+                                $repo_parsed["host"],
+                                $repo_parsed["path"]
+                            );
+                        }
+                        // Same for 80 and http.
+                        if ($port === 80 && $repo_parsed['scheme'] === 'http') {
+                            $repo_path = sprintf(
+                                'http://oauth2:%s@%s%s',
+                                $authToken,
+                                $repo_parsed["host"],
+                                $repo_parsed["path"]
+                            );
+                        }
+                        break;
                 }
             }
         }
