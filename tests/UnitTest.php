@@ -30,6 +30,11 @@ class UnitTest extends TestCase
                 'https://x-token-auth:mytoken@bitbucket.org/user/repo.git',
             ],
             [
+                'git@bitbucket.org:user/repo',
+                'mytoken',
+                'https://x-token-auth:mytoken@bitbucket.org/user/repo.git',
+            ],
+            [
                 'git@bitbucket.org:user/repo.git',
                 'user:mytoken',
                 'https://user:mytoken@bitbucket.org/user/repo.git',
@@ -66,6 +71,11 @@ class UnitTest extends TestCase
             ],
             [
                 'https://www.bitbucket.org/user/repo.git',
+                'token123',
+                'https://x-token-auth:token123@bitbucket.org/user/repo.git',
+            ],
+            [
+                'https://www.bitbucket.org/user/repo',
                 'token123',
                 'https://x-token-auth:token123@bitbucket.org/user/repo.git',
             ],

@@ -20,14 +20,8 @@ final class ToCloneUrl
         if (!empty($repo_parsed)) {
             switch ($repo_parsed['_protocol']) {
                 case 'git@bitbucket.org':
-                    $repo_path = sprintf('https://x-token-auth:%s@bitbucket.org/%s', $authToken, $repo_parsed['path']);
-                    if (strlen($authToken) < 50 && strpos($authToken, ':') !== false) {
-                        $repo_path = sprintf(
-                            'https://%s@bitbucket.org/%s',
-                            $authToken,
-                            $repo_parsed['path']
-                        );
-                    }
+                    $path = sprintf('/%s', $repo_parsed['path']);
+                    $repo_path = self::replaceForBitbucket($authToken, $path);
                     $has_replaced = true;
                     break;
 
@@ -58,18 +52,7 @@ final class ToCloneUrl
 
                     case 'www.bitbucket.org':
                     case 'bitbucket.org':
-                        $repo_path = sprintf(
-                            'https://x-token-auth:%s@bitbucket.org%s',
-                            $authToken,
-                            $repo_parsed["path"]
-                        );
-                        if (strlen($authToken) < 50 && strpos($authToken, ':') !== false) {
-                            $repo_path = sprintf(
-                                'https://%s@bitbucket.org%s',
-                                $authToken,
-                                $repo_parsed['path']
-                            );
-                        }
+                        $repo_path = self::replaceForBitbucket($authToken, $repo_parsed['path']);
                         break;
 
                     default:
@@ -111,6 +94,23 @@ final class ToCloneUrl
                         break;
                 }
             }
+        }
+        return $repo_path;
+    }
+
+    private static function replaceForBitbucket(string $authToken, string $path)
+    {
+        $repo_path = sprintf('https://x-token-auth:%s@bitbucket.org%s', $authToken, $path);
+        if (strlen($authToken) < 50 && strpos($authToken, ':') !== false) {
+            $repo_path = sprintf(
+                'https://%s@bitbucket.org%s',
+                $authToken,
+                $path
+            );
+        }
+        // We also want to ensure it ends with .git.
+        if (substr($repo_path, -4) !== '.git') {
+            $repo_path .= '.git';
         }
         return $repo_path;
     }
