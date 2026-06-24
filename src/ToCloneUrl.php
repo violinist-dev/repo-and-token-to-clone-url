@@ -108,6 +108,14 @@ final class ToCloneUrl
                 $path
             );
         }
+        // Atlassian API tokens (which start with ATAT) need a different user.
+        if (strpos($authToken, 'ATAT') === 0) {
+            $repo_path = sprintf(
+                'https://x-bitbucket-api-token-auth:%s@bitbucket.org%s',
+                $authToken,
+                $path
+            );
+        }
         // We also want to ensure it ends with .git.
         if (substr($repo_path, -4) !== '.git') {
             $repo_path .= '.git';
