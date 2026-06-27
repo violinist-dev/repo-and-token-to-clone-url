@@ -100,22 +100,39 @@ final class ToCloneUrl
 
     private static function replaceForBitbucket(string $authToken, string $path)
     {
-        $repo_path = sprintf('https://x-token-auth:%s@bitbucket.org%s', $authToken, $path);
-        if (strlen($authToken) < 50 && strpos($authToken, ':') !== false) {
-            $repo_path = sprintf(
-                'https://%s@bitbucket.org%s',
-                $authToken,
-                $path
-            );
+        // Split on the first colon to separate an optional username/email
+        // prefix from the actual token value.
+        $colonPos = strpos($authToken, ':');
+        if ($colonPos !== false) {
+            $prefix = substr($authToken, 0, $colonPos);
+            $token  = substr($authToken, $colonPos + 1);
+        } else {
+            $prefix = null;
+            $token  = $authToken;
         }
-        // Atlassian API tokens (which start with ATAT) need a different user.
-        if (strpos($authToken, 'ATAT') === 0) {
+
+        // Atlassian API tokens start with ATAT and require a specific username
+        // in the URL, regardless of any username/email prefix supplied by the caller.
+        if (strpos($token, 'ATAT') === 0) {
             $repo_path = sprintf(
                 'https://x-bitbucket-api-token-auth:%s@bitbucket.org%s',
-                $authToken,
+                $token,
                 $path
             );
+        } elseif ($prefix !== null) {
+            // Username or email prefix with a regular token: use as user:pass.
+            // Encode the prefix so that email addresses (containing "@") are
+            // safe to embed in a URL.
+            $repo_path = sprintf(
+                'https://%s:%s@bitbucket.org%s',
+                rawurlencode($prefix),
+                $token,
+                $path
+            );
+        } else {
+            $repo_path = sprintf('https://x-token-auth:%s@bitbucket.org%s', $token, $path);
         }
+
         // We also want to ensure it ends with .git.
         if (substr($repo_path, -4) !== '.git') {
             $repo_path .= '.git';

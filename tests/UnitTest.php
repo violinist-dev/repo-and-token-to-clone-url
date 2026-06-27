@@ -119,6 +119,30 @@ class UnitTest extends TestCase
                 'mytoken',
                 'http://oauth2:mytoken@gitlab.acme.com:8877/user/repo.git',
             ],
+            // Username prefix on Bitbucket (HTTPS)
+            [
+                'https://bitbucket.org/user/repo.git',
+                'myusername:mytoken',
+                'https://myusername:mytoken@bitbucket.org/user/repo.git',
+            ],
+            // Email prefix on Bitbucket (SSH) — "@" in the email is encoded
+            [
+                'git@bitbucket.org:user/repo.git',
+                'user@example.com:mytoken',
+                'https://user%40example.com:mytoken@bitbucket.org/user/repo.git',
+            ],
+            // Username prefix + ATAT token: prefix is replaced by x-bitbucket-api-token-auth
+            [
+                'git@bitbucket.org:user/repo.git',
+                'myusername:ATATmytoken',
+                'https://x-bitbucket-api-token-auth:ATATmytoken@bitbucket.org/user/repo.git',
+            ],
+            // Email prefix + ATAT token: prefix is replaced by x-bitbucket-api-token-auth
+            [
+                'https://bitbucket.org/user/repo.git',
+                'user@example.com:ATATmytoken',
+                'https://x-bitbucket-api-token-auth:ATATmytoken@bitbucket.org/user/repo.git',
+            ],
         ];
     }
 }
