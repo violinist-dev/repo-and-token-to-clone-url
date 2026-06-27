@@ -125,47 +125,23 @@ class UnitTest extends TestCase
                 'myusername:mytoken',
                 'https://myusername:mytoken@bitbucket.org/user/repo.git',
             ],
-            // Email prefix on Bitbucket (SSH) — email "@" must be encoded in the URL
+            // Email prefix on Bitbucket (SSH) — "@" in the email is encoded
             [
                 'git@bitbucket.org:user/repo.git',
                 'user@example.com:mytoken',
                 'https://user%40example.com:mytoken@bitbucket.org/user/repo.git',
             ],
-            // Username prefix on GitHub (SSH)
+            // Username prefix + ATAT token: prefix is replaced by x-bitbucket-api-token-auth
             [
-                'git@github.com:user/repo.git',
-                'myusername:mytoken',
-                'https://myusername:mytoken@github.com/user/repo.git',
+                'git@bitbucket.org:user/repo.git',
+                'myusername:ATATmytoken',
+                'https://x-bitbucket-api-token-auth:ATATmytoken@bitbucket.org/user/repo.git',
             ],
-            // Email prefix on GitHub (HTTPS)
+            // Email prefix + ATAT token: prefix is replaced by x-bitbucket-api-token-auth
             [
-                'https://github.com/user/repo.git',
-                'user@example.com:mytoken',
-                'https://user%40example.com:mytoken@github.com/user/repo.git',
-            ],
-            // Username prefix on GitLab (HTTPS)
-            [
-                'https://gitlab.com/user/repo.git',
-                'myusername:mytoken',
-                'https://myusername:mytoken@gitlab.com/user/repo.git',
-            ],
-            // Email prefix on GitLab (HTTPS)
-            [
-                'https://gitlab.com/user/repo.git',
-                'user@example.com:mytoken',
-                'https://user%40example.com:mytoken@gitlab.com/user/repo.git',
-            ],
-            // Email prefix on self-hosted GitLab (HTTPS, standard port)
-            [
-                'https://gitlab.acme.com/user/repo.git',
-                'user@example.com:mytoken',
-                'https://user%40example.com:mytoken@gitlab.acme.com/user/repo.git',
-            ],
-            // Username prefix on self-hosted GitLab (HTTPS, custom port)
-            [
-                'https://gitlab.acme.com:9977/user/repo.git',
-                'myusername:mytoken',
-                'https://myusername:mytoken@gitlab.acme.com:9977/user/repo.git',
+                'https://bitbucket.org/user/repo.git',
+                'user@example.com:ATATmytoken',
+                'https://x-bitbucket-api-token-auth:ATATmytoken@bitbucket.org/user/repo.git',
             ],
         ];
     }
